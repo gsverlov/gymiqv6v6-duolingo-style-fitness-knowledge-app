@@ -165,3 +165,111 @@ export interface ToastNotification {
   icon: string;
   color: 'green' | 'gold' | 'blue' | 'red';
 }
+
+// ─── Static Data Types (mirrors DB seed for offline/fallback use) ─────────────
+
+export interface StaticUnit {
+  id: string;
+  title: string;
+  emoji: string;
+  description: string;
+  sort_order: number;
+  unlock_requires: string | null;
+}
+
+export interface StaticLesson {
+  id: string;
+  unit_id: string;
+  title: string;
+  sort_order: number;
+  xp_reward: number;
+}
+
+export interface StaticChoice {
+  id: string;
+  question_id: string;
+  label: string;
+  is_correct: boolean;
+  sort_order: number;
+}
+
+export interface StaticQuestion {
+  id: string;
+  lesson_id: string;
+  type: QuestionType;
+  question_text: string;
+  image_url: string | null;
+  correct_answer: string;
+  explanation: string;
+  sort_order: number;
+  choices: StaticChoice[];
+}
+
+export interface StaticAchievement {
+  key: string;
+  title: string;
+  description: string;
+  icon_emoji: string;
+}
+
+// ─── XP / Level Thresholds ────────────────────────────────────────────────────
+
+export interface LevelThreshold {
+  level: number;
+  xpRequired: number; // cumulative XP to reach this level
+}
+
+// ─── Streak ───────────────────────────────────────────────────────────────────
+
+export interface StreakUpdate {
+  newStreak: number;
+  longestStreak: number;
+  streakChanged: boolean;
+  wasReset: boolean;
+}
+
+// ─── Hearts ───────────────────────────────────────────────────────────────────
+
+export interface HeartState {
+  count: number;
+  nextRefillAt: Date | null;
+  msUntilNextRefill: number | null;
+}
+
+// ─── Achievement Checking ─────────────────────────────────────────────────────
+
+export interface AchievementCheckContext {
+  user: UserProfile;
+  lessonResult: LessonResult;
+  unitId: string;
+  allCompletedLessonIds: string[];
+  /** unit_id → total lesson count in that unit */
+  unitLessonCounts: Record<string, number>;
+  alreadyUnlockedKeys: string[];
+}
+
+// ─── Profile Stats ────────────────────────────────────────────────────────────
+
+export interface UserStats {
+  currentStreak: number;
+  longestStreak: number;
+  lessonsCompleted: number;
+  totalXP: number;
+}
+
+// ─── Goal Selection ───────────────────────────────────────────────────────────
+
+export interface GoalOption {
+  value: Goal;
+  emoji: string;
+  title: string;
+  subtitle: string;
+}
+
+// ─── Lesson Answer Tracking ───────────────────────────────────────────────────
+
+export interface LessonAnswer {
+  questionId: string;
+  selectedAnswer: string;
+  isCorrect: boolean;
+}

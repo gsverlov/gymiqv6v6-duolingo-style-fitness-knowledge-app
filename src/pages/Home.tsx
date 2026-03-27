@@ -1,10 +1,10 @@
-import { motion } from 'framer-motion';
-import { AppLayout } from '../components/layout/AppLayout';
-import { useUserStore } from '../store/useUserStore';
-import { useProgress } from '../hooks/useProgress';
-import { getLevelInfo } from '../lib/xp';
-import { ProgressBar } from '../components/ui/ProgressBar';
-import { SkillTree } from '../components/skill-tree/SkillTree';
+import { motion } from 'framer-motion'
+import { AppLayout } from '../components/layout/AppLayout'
+import { useUserStore } from '../store/useUserStore'
+import { useProgress } from '../hooks/useProgress'
+import { getLevelInfo } from '../lib/xp'
+import { ProgressBar } from '../components/ui/ProgressBar'
+import { SkillTree } from '../components/skill-tree/SkillTree'
 
 function SkeletonNode() {
   return (
@@ -22,15 +22,15 @@ function SkeletonNode() {
         transition={{ repeat: Infinity, duration: 1.4, ease: 'easeInOut', delay: 0.2 }}
       />
     </div>
-  );
+  )
 }
 
 export default function Home() {
-  const profile = useUserStore((s) => s.profile);
-  const { units, loading, error, refetch } = useProgress();
+  const profile = useUserStore((s) => s.profile)
+  const { units, loading, error, refetch } = useProgress()
 
-  const totalXp = profile?.total_xp ?? 0;
-  const levelInfo = getLevelInfo(totalXp);
+  const totalXp = profile?.total_xp ?? 0
+  const levelInfo = getLevelInfo(totalXp)
 
   return (
     <AppLayout>
@@ -99,5 +99,5 @@ export default function Home() {
         )}
       </div>
     </AppLayout>
-  );
+  )
 }

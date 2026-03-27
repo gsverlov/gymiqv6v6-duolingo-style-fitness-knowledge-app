@@ -1,45 +1,96 @@
-import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import type { Goal } from '../types'
+import { GymOwl } from '../components/auth/GymOwl'
+import { GoalCard } from '../components/auth/GoalCard'
+import { Button } from '../components/ui/Button'
+import { useUserStore } from '../store/useUserStore'
+import { supabase } from '../lib/supabase'
+import { pageTransition, staggerContainer, staggerItem } from '../lib/animations'
 
-const GOALS = [
-  { emoji: '💪', title: 'Build Muscle', description: 'Learn muscle anatomy and training principles', value: 'muscle' },
-  { emoji: '🥗', title: 'Nutrition', description: 'Master nutrition science and meal planning', value: 'nutrition' },
-  { emoji: '🦴', title: 'Anatomy', description: 'Understand how your body works', value: 'anatomy' },
-  { emoji: '🏆', title: 'All of the Above', description: 'Complete fitness education', value: 'all' },
-] as const;
+const GOALS: { id: Goal; emoji: string; title: string; description: string }[] = [
+  { id: 'muscle', emoji: '🏋️', title: 'Build muscle', description: 'Learn hypertrophy & programming' },
+  { id: 'nutrition', emoji: '🥗', title: 'Eat better', description: 'Master nutrition & macros' },
+  { id: 'anatomy', emoji: '🧠', title: 'Understand my body', description: 'Muscle anatomy & physiology' },
+  { id: 'all', emoji: '⚡', title: 'All of the above', description: 'Full curriculum' },
+]
 
 export default function GoalSelection() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const session = useUserStore((s) => s.session)
+  const updateProfile = useUserStore((s) => s.updateProfile)
+
+  const [selected, setSelected] = useState<Goal | null>(null)
+  const [loading, setLoading] = useState(false)
+
+  async function handleContinue() {
+    const userId = session?.user?.id
+    if (!userId || !selected) return
+
+    setLoading(true)
+
+    await supabase
+      .from('users')
+      .update({ goal: selected })
+      .eq('id', userId)
+
+    updateProfile({ goal: selected })
+    navigate('/')
+  }
 
   return (
-    <div className="min-h-screen bg-[#0f0f1a] px-6 py-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="max-w-sm mx-auto flex flex-col gap-6"
-      >
-        <div className="text-center">
-          <h1 className="text-3xl font-black text-white">What's Your Goal?</h1>
-          <p className="text-[#afafaf] mt-2">Choose a focus to personalize your learning path</p>
-        </div>
+    <motion.div
+      variants={pageTransition}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      className="min-h-screen bg-bg flex flex-col max-w-[480px] mx-auto px-6 py-8"
+    >
+      {/* Owl */}
+      <div className="flex justify-center">
+        <GymOwl mood="happy" size={80} animate={false} />
+      </div>
 
-        <div className="flex flex-col gap-3">
-          {GOALS.map((goal) => (
-            <motion.button
-              key={goal.value}
-              whileTap={{ scale: 0.97 }}
-              onClick={() => navigate('/home')}
-              className="w-full p-4 rounded-2xl bg-[#1a1a2e] border border-[#2a2a4a] text-left flex items-center gap-4 hover:border-[#58cc02] transition-colors"
-            >
-              <span className="text-3xl">{goal.emoji}</span>
-              <div>
-                <p className="text-white font-bold">{goal.title}</p>
-                <p className="text-[#afafaf] text-sm">{goal.description}</p>
-              </div>
-            </motion.button>
-          ))}
-        </div>
+      {/* Heading */}
+      <h1 className="text-3xl font-black text-text-primary text-center mb-2 mt-4">
+        What&apos;s your goal?
+      </h1>
+      <p className="text-text-secondary text-center mb-8">
+        We&apos;ll personalize your curriculum
+      </p>
+
+      {/* Goal cards with stagger animation */}
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        animate="visible"
+        className="flex flex-col gap-3"
+      >
+        {GOALS.map((g) => (
+          <motion.div key={g.id} variants={staggerItem}>
+            <GoalCard
+              emoji={g.emoji}
+              title={g.title}
+              description={g.description}
+              selected={selected === g.id}
+              onSelect={() => setSelected(g.id)}
+            />
+          </motion.div>
+        ))}
       </motion.div>
-    </div>
-  );
+
+      {/* Continue button */}
+      <Button
+        fullWidth
+        size="lg"
+        disabled={!selected}
+        loading={loading}
+        onClick={handleContinue}
+        className="mt-6"
+      >
+        Continue
+      </Button>
+    </motion.div>
+  )
 }

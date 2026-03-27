@@ -50,7 +50,9 @@ export function useProgress(): UseProgressReturn {
   const buildFromStaticData = useCallback(() => {
     const result: UnitWithProgress[] = STATIC_UNITS.map((u) => ({
       ...u,
-      lessons: u.lessons as Lesson[],
+      created_at: '',
+      updated_at: '',
+      lessons: (u.lessons as Lesson[]).map((l) => ({ ...l, created_at: '', updated_at: '' })),
       progress: null,
       nodeState: u.sort_order <= 3 ? 'available' : 'locked',
       stars: 0,
@@ -104,7 +106,9 @@ export function useProgress(): UseProgressReturn {
         const stars = computeStars(lessons, lessonProgressList);
         return {
           ...unit,
-          lessons,
+          created_at: (unit as { created_at?: string }).created_at ?? '',
+          updated_at: (unit as { updated_at?: string }).updated_at ?? '',
+          lessons: lessons.map((l) => ({ ...l, created_at: (l as { created_at?: string }).created_at ?? '', updated_at: (l as { updated_at?: string }).updated_at ?? '' })),
           progress,
           nodeState,
           stars,

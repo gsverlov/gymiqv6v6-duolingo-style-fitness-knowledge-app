@@ -1,144 +1,140 @@
-import type { Unit, Lesson } from '../types';
+// ── GymIQV6V6 — Static Unit & Lesson Definitions ───────────────────────────
+// Mirrors the units + lessons seed data in 002_seed_data.sql.
+// Used as offline fallback and for client-side unlock logic.
 
-export interface StaticUnitData extends Unit {
-  lessons: Omit<Lesson, 'created_at' | 'updated_at'>[];
+import type { StaticUnit, StaticLesson } from '../types';
+
+export interface StaticUnitWithLessons extends StaticUnit {
+  lessons: StaticLesson[];
 }
 
-export const STATIC_UNITS: StaticUnitData[] = [
+// ── Lesson ID helpers ───────────────────────────────────────────────────────
+// Format matches SQL seed: 2200000X-0000-0000-0000-000000000000
+const L = (n: number): string =>
+  `22000${String(n).padStart(3, '0')}-0000-0000-0000-000000000000`;
+
+const U = (n: number): string =>
+  `11111111-0000-0000-0000-00000000000${n}`;
+
+// ── Units ───────────────────────────────────────────────────────────────────
+
+export const STATIC_UNITS: StaticUnitWithLessons[] = [
   {
-    id: '11111111-0000-0000-0000-000000000001',
+    id: U(1),
     title: 'Intro to Training',
     emoji: '🏋️',
-    description: 'Learn the fundamentals of gym training, safety, and building good habits.',
+    description: 'Master the fundamentals of resistance training and why it works.',
     sort_order: 1,
     unlock_requires: null,
-    created_at: '2024-01-01T00:00:00Z',
-    updated_at: '2024-01-01T00:00:00Z',
     lessons: [
-      { id: 'l1-1', unit_id: '11111111-0000-0000-0000-000000000001', title: 'Why Lift?', sort_order: 1, xp_reward: 20 },
-      { id: 'l1-2', unit_id: '11111111-0000-0000-0000-000000000001', title: 'Gym Etiquette', sort_order: 2, xp_reward: 20 },
-      { id: 'l1-3', unit_id: '11111111-0000-0000-0000-000000000001', title: 'Safety Basics', sort_order: 3, xp_reward: 20 },
-      { id: 'l1-4', unit_id: '11111111-0000-0000-0000-000000000001', title: 'Warm-Up & Cool-Down', sort_order: 4, xp_reward: 20 },
-      { id: 'l1-5', unit_id: '11111111-0000-0000-0000-000000000001', title: 'Setting Goals', sort_order: 5, xp_reward: 20 },
+      { id: L(1),  unit_id: U(1), title: 'What is Resistance Training?', sort_order: 1, xp_reward: 20 },
+      { id: L(2),  unit_id: U(1), title: 'Reps & Sets Explained',        sort_order: 2, xp_reward: 20 },
+      { id: L(3),  unit_id: U(1), title: 'Progressive Overload',         sort_order: 3, xp_reward: 20 },
     ],
   },
   {
-    id: '11111111-0000-0000-0000-000000000002',
+    id: U(2),
     title: 'Muscle Anatomy',
     emoji: '🦵',
-    description: 'Understand the major muscle groups and how they work together.',
+    description: 'Learn the muscles you\'re training and how they function.',
     sort_order: 2,
     unlock_requires: null,
-    created_at: '2024-01-01T00:00:00Z',
-    updated_at: '2024-01-01T00:00:00Z',
     lessons: [
-      { id: 'l2-1', unit_id: '11111111-0000-0000-0000-000000000002', title: 'Upper Body Muscles', sort_order: 1, xp_reward: 20 },
-      { id: 'l2-2', unit_id: '11111111-0000-0000-0000-000000000002', title: 'Lower Body Muscles', sort_order: 2, xp_reward: 20 },
-      { id: 'l2-3', unit_id: '11111111-0000-0000-0000-000000000002', title: 'Core Muscles', sort_order: 3, xp_reward: 20 },
-      { id: 'l2-4', unit_id: '11111111-0000-0000-0000-000000000002', title: 'Muscle Fiber Types', sort_order: 4, xp_reward: 20 },
-      { id: 'l2-5', unit_id: '11111111-0000-0000-0000-000000000002', title: 'How Muscles Grow', sort_order: 5, xp_reward: 20 },
+      { id: L(4),  unit_id: U(2), title: 'Upper Body Muscles',  sort_order: 1, xp_reward: 20 },
+      { id: L(5),  unit_id: U(2), title: 'Lower Body Muscles',  sort_order: 2, xp_reward: 20 },
+      { id: L(6),  unit_id: U(2), title: 'Core Muscles',        sort_order: 3, xp_reward: 20 },
+      { id: L(7),  unit_id: U(2), title: 'Muscle Fiber Types',  sort_order: 4, xp_reward: 20 },
     ],
   },
   {
-    id: '11111111-0000-0000-0000-000000000003',
+    id: U(3),
     title: 'Exercise Form',
     emoji: '✅',
-    description: 'Master proper technique for the most important compound movements.',
+    description: 'Perfect your technique on the big compound movements.',
     sort_order: 3,
     unlock_requires: null,
-    created_at: '2024-01-01T00:00:00Z',
-    updated_at: '2024-01-01T00:00:00Z',
     lessons: [
-      { id: 'l3-1', unit_id: '11111111-0000-0000-0000-000000000003', title: 'The Squat', sort_order: 1, xp_reward: 20 },
-      { id: 'l3-2', unit_id: '11111111-0000-0000-0000-000000000003', title: 'The Deadlift', sort_order: 2, xp_reward: 20 },
-      { id: 'l3-3', unit_id: '11111111-0000-0000-0000-000000000003', title: 'The Bench Press', sort_order: 3, xp_reward: 20 },
-      { id: 'l3-4', unit_id: '11111111-0000-0000-0000-000000000003', title: 'Rows & Pull-ups', sort_order: 4, xp_reward: 20 },
-      { id: 'l3-5', unit_id: '11111111-0000-0000-0000-000000000003', title: 'Overhead Press', sort_order: 5, xp_reward: 20 },
+      { id: L(8),  unit_id: U(3), title: 'The Squat',       sort_order: 1, xp_reward: 20 },
+      { id: L(9),  unit_id: U(3), title: 'The Deadlift',    sort_order: 2, xp_reward: 20 },
+      { id: L(10), unit_id: U(3), title: 'The Bench Press', sort_order: 3, xp_reward: 20 },
+      { id: L(11), unit_id: U(3), title: 'Pull-ups & Rows', sort_order: 4, xp_reward: 20 },
     ],
   },
   {
-    id: '11111111-0000-0000-0000-000000000004',
+    id: U(4),
     title: 'Nutrition Basics',
     emoji: '🥗',
-    description: 'Fuel your workouts with the right nutrition strategies.',
+    description: 'Understand the fuel your body needs to perform and grow.',
     sort_order: 4,
-    unlock_requires: '11111111-0000-0000-0000-000000000003',
-    created_at: '2024-01-01T00:00:00Z',
-    updated_at: '2024-01-01T00:00:00Z',
+    unlock_requires: U(3),
     lessons: [
-      { id: 'l4-1', unit_id: '11111111-0000-0000-0000-000000000004', title: 'Macronutrients', sort_order: 1, xp_reward: 20 },
-      { id: 'l4-2', unit_id: '11111111-0000-0000-0000-000000000004', title: 'Protein & Muscle', sort_order: 2, xp_reward: 20 },
-      { id: 'l4-3', unit_id: '11111111-0000-0000-0000-000000000004', title: 'Carbs for Energy', sort_order: 3, xp_reward: 20 },
-      { id: 'l4-4', unit_id: '11111111-0000-0000-0000-000000000004', title: 'Healthy Fats', sort_order: 4, xp_reward: 20 },
-      { id: 'l4-5', unit_id: '11111111-0000-0000-0000-000000000004', title: 'Meal Timing', sort_order: 5, xp_reward: 20 },
+      { id: L(12), unit_id: U(4), title: 'Macronutrients',          sort_order: 1, xp_reward: 25 },
+      { id: L(13), unit_id: U(4), title: 'Protein for Muscle Growth', sort_order: 2, xp_reward: 25 },
+      { id: L(14), unit_id: U(4), title: 'Carbs & Energy',           sort_order: 3, xp_reward: 25 },
+      { id: L(15), unit_id: U(4), title: 'Fats Explained',           sort_order: 4, xp_reward: 25 },
     ],
   },
   {
-    id: '11111111-0000-0000-0000-000000000005',
+    id: U(5),
     title: 'Programming',
     emoji: '📋',
-    description: 'Design effective training programs for maximum results.',
+    description: 'Design training programs that produce consistent progress.',
     sort_order: 5,
-    unlock_requires: '11111111-0000-0000-0000-000000000004',
-    created_at: '2024-01-01T00:00:00Z',
-    updated_at: '2024-01-01T00:00:00Z',
+    unlock_requires: U(4),
     lessons: [
-      { id: 'l5-1', unit_id: '11111111-0000-0000-0000-000000000005', title: 'Progressive Overload', sort_order: 1, xp_reward: 20 },
-      { id: 'l5-2', unit_id: '11111111-0000-0000-0000-000000000005', title: 'Volume & Intensity', sort_order: 2, xp_reward: 20 },
-      { id: 'l5-3', unit_id: '11111111-0000-0000-0000-000000000005', title: 'Training Splits', sort_order: 3, xp_reward: 20 },
-      { id: 'l5-4', unit_id: '11111111-0000-0000-0000-000000000005', title: 'Periodization', sort_order: 4, xp_reward: 20 },
-      { id: 'l5-5', unit_id: '11111111-0000-0000-0000-000000000005', title: 'Deload Weeks', sort_order: 5, xp_reward: 20 },
+      { id: L(16), unit_id: U(5), title: 'Training Frequency',   sort_order: 1, xp_reward: 25 },
+      { id: L(17), unit_id: U(5), title: 'Workout Splits',       sort_order: 2, xp_reward: 25 },
+      { id: L(18), unit_id: U(5), title: 'Periodization Basics', sort_order: 3, xp_reward: 25 },
     ],
   },
   {
-    id: '11111111-0000-0000-0000-000000000006',
+    id: U(6),
     title: 'Recovery',
     emoji: '😴',
-    description: 'Optimize recovery to grow stronger and prevent injury.',
+    description: 'Learn why rest is where the real gains happen.',
     sort_order: 6,
-    unlock_requires: '11111111-0000-0000-0000-000000000005',
-    created_at: '2024-01-01T00:00:00Z',
-    updated_at: '2024-01-01T00:00:00Z',
+    unlock_requires: U(5),
     lessons: [
-      { id: 'l6-1', unit_id: '11111111-0000-0000-0000-000000000006', title: 'Sleep & Muscle Growth', sort_order: 1, xp_reward: 20 },
-      { id: 'l6-2', unit_id: '11111111-0000-0000-0000-000000000006', title: 'Active Recovery', sort_order: 2, xp_reward: 20 },
-      { id: 'l6-3', unit_id: '11111111-0000-0000-0000-000000000006', title: 'Stretching & Mobility', sort_order: 3, xp_reward: 20 },
-      { id: 'l6-4', unit_id: '11111111-0000-0000-0000-000000000006', title: 'Managing Soreness', sort_order: 4, xp_reward: 20 },
-      { id: 'l6-5', unit_id: '11111111-0000-0000-0000-000000000006', title: 'Overtraining Signs', sort_order: 5, xp_reward: 20 },
+      { id: L(19), unit_id: U(6), title: 'Why Sleep Matters', sort_order: 1, xp_reward: 30 },
+      { id: L(20), unit_id: U(6), title: 'Active Recovery',   sort_order: 2, xp_reward: 30 },
+      { id: L(21), unit_id: U(6), title: 'Deload Weeks',      sort_order: 3, xp_reward: 30 },
     ],
   },
   {
-    id: '11111111-0000-0000-0000-000000000007',
+    id: U(7),
     title: 'Cardio Science',
     emoji: '💨',
-    description: 'Understand cardiovascular training and its role in fitness.',
+    description: 'Understand cardiovascular training and its relationship with muscle.',
     sort_order: 7,
-    unlock_requires: '11111111-0000-0000-0000-000000000006',
-    created_at: '2024-01-01T00:00:00Z',
-    updated_at: '2024-01-01T00:00:00Z',
+    unlock_requires: U(6),
     lessons: [
-      { id: 'l7-1', unit_id: '11111111-0000-0000-0000-000000000007', title: 'Aerobic vs Anaerobic', sort_order: 1, xp_reward: 20 },
-      { id: 'l7-2', unit_id: '11111111-0000-0000-0000-000000000007', title: 'Heart Rate Zones', sort_order: 2, xp_reward: 20 },
-      { id: 'l7-3', unit_id: '11111111-0000-0000-0000-000000000007', title: 'HIIT Training', sort_order: 3, xp_reward: 20 },
-      { id: 'l7-4', unit_id: '11111111-0000-0000-0000-000000000007', title: 'Cardio & Muscle', sort_order: 4, xp_reward: 20 },
-      { id: 'l7-5', unit_id: '11111111-0000-0000-0000-000000000007', title: 'VO2 Max', sort_order: 5, xp_reward: 20 },
+      { id: L(22), unit_id: U(7), title: 'HIIT vs Steady-State', sort_order: 1, xp_reward: 30 },
+      { id: L(23), unit_id: U(7), title: 'VO2 Max',              sort_order: 2, xp_reward: 30 },
+      { id: L(24), unit_id: U(7), title: 'Cardio & Muscle',      sort_order: 3, xp_reward: 30 },
     ],
   },
   {
-    id: '11111111-0000-0000-0000-000000000008',
+    id: U(8),
     title: 'Advanced Nutrition',
     emoji: '🧪',
-    description: 'Deep dive into advanced nutrition science and supplementation.',
+    description: 'Dive deep into supplements, timing, and body composition.',
     sort_order: 8,
-    unlock_requires: '11111111-0000-0000-0000-000000000007',
-    created_at: '2024-01-01T00:00:00Z',
-    updated_at: '2024-01-01T00:00:00Z',
+    unlock_requires: U(7),
     lessons: [
-      { id: 'l8-1', unit_id: '11111111-0000-0000-0000-000000000008', title: 'Supplements Overview', sort_order: 1, xp_reward: 20 },
-      { id: 'l8-2', unit_id: '11111111-0000-0000-0000-000000000008', title: 'Creatine Science', sort_order: 2, xp_reward: 20 },
-      { id: 'l8-3', unit_id: '11111111-0000-0000-0000-000000000008', title: 'Cutting vs Bulking', sort_order: 3, xp_reward: 20 },
-      { id: 'l8-4', unit_id: '11111111-0000-0000-0000-000000000008', title: 'Micronutrients', sort_order: 4, xp_reward: 20 },
-      { id: 'l8-5', unit_id: '11111111-0000-0000-0000-000000000008', title: 'Hydration Science', sort_order: 5, xp_reward: 20 },
+      { id: L(25), unit_id: U(8), title: 'Creatine & Supplements',    sort_order: 1, xp_reward: 35 },
+      { id: L(26), unit_id: U(8), title: 'Caloric Surplus & Deficit', sort_order: 2, xp_reward: 35 },
+      { id: L(27), unit_id: U(8), title: 'Meal Timing',               sort_order: 3, xp_reward: 35 },
     ],
   },
 ];
+
+/** IDs of the first 3 units — always unlocked regardless of progress */
+export const ALWAYS_UNLOCKED_UNIT_IDS: string[] = [U(1), U(2), U(3)];
+
+/** Flat list of all lessons across all units */
+export const ALL_LESSONS: StaticLesson[] = STATIC_UNITS.flatMap((u) => u.lessons);
+
+/** Map of unit_id → lesson count */
+export const UNIT_LESSON_COUNTS: Record<string, number> = Object.fromEntries(
+  STATIC_UNITS.map((u) => [u.id, u.lessons.length]),
+);
