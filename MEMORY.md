@@ -49,13 +49,16 @@ All foundational files scaffolded:
 - XP thresholds (`src/data/levels.ts`)
 - Note: SQL migration files (`supabase/migrations/`) should be added in a separate DB subtask
 
-### Subtask 3: Auth & Onboarding — COMPLETE (committed as "LIN-49: Project Setup")
-- Landing.tsx: dark gradient hero, GymOwl emoji, CTA buttons
-- Login.tsx: email/password with Supabase auth
-- Signup.tsx: display name + email + password, validation, confetti burst
-- GoalSelection.tsx: 4 animated goal cards
-- useAuth.ts: Supabase auth state subscription
-- GymOwl.tsx, AuthInput.tsx, GoalCard.tsx components
+### Subtask 3: Auth & Onboarding — COMPLETE (committed as "LIN-49: Auth & Onboarding")
+- Landing.tsx: full dark-theme hero with radial glow behind GymOwl, tagline "Get swole. Get smart.", feature pills, stats row, dual CTA buttons with Framer Motion press animation
+- Login.tsx: AnimatePresence transitions between 3 panels — main login form / forgot-password / magic-link-sent; magic link via Supabase OTP
+- Signup.tsx: display name + email + password with inline validation (red shake animation on error via Framer Motion key trick, green CheckCircle2 on valid); Confetti component creates 60 DOM particles on success; 1.8s redirect to GoalSelection
+- GoalSelection.tsx: 4 goal cards with staggerContainer/staggerItem animation, Supabase update + optimistic Zustand updateProfile on continue
+- GymOwl.tsx: full SVG mascot (body, head, ear tufts, wings, dumbbell, feet, eyes with mood variants) — spring bounce entrance + happy bounce loop × 3
+- AuthInput.tsx: label + input with motion.div shake on error (key={error} re-triggers animation), focus-within border color transition, valid/error icon positioned absolute
+- GoalCard.tsx: tappable motion.button with selected state (bg-accent/10 border-accent + CheckCircle2)
+- App.tsx: fixed double-BrowserRouter bug (removed from App.tsx, kept in main.tsx); RequireAuth + AppInitializer pattern; AnimatePresence mode="wait" page transitions
+- Bug fixes: useProgress.ts missing created_at/updated_at on UnitWithProgress; streak.ts missing longestStreak in early-return path
 
 ### Subtask 4: Skill Tree & Home — COMPLETE (committed as "LIN-49: Skill Tree & Home")
 - `src/pages/Home.tsx`: XP progress bar + level badge + SkillTree + loading skeletons + error state
